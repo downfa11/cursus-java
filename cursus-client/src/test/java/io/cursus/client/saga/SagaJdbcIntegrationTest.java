@@ -3,10 +3,10 @@ package io.cursus.client.saga;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
-import io.cursus.client.sagapg.PostgresSagaMigrations;
-import io.cursus.client.sagapg.PostgresSagaTransaction;
 import io.cursus.client.sagamysql.MySqlSagaMigrations;
 import io.cursus.client.sagamysql.MySqlSagaTransaction;
+import io.cursus.client.sagapg.PostgresSagaMigrations;
+import io.cursus.client.sagapg.PostgresSagaTransaction;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -35,16 +35,32 @@ class SagaJdbcIntegrationTest {
   }
 
   private void verify(DataSource dataSource, boolean postgres) throws Exception {
-    if (postgres) PostgresSagaMigrations.migrate(dataSource); else MySqlSagaMigrations.migrate(dataSource);
+    if (postgres) PostgresSagaMigrations.migrate(dataSource);
+    else MySqlSagaMigrations.migrate(dataSource);
     String id = "java-contract-" + UUID.randomUUID();
-    SagaDefinition definition = new SagaDefinition("java-contract", java.util.Map.of("OrderCreated", (state, event) -> {
-      state.setStatus(SagaState.WAITING); state.setStepId("reserve"); return List.of(new SagaCommand("Reserve", "{}"));
-    }));
-    SagaContracts.Transaction transaction = postgres ? new PostgresSagaTransaction(dataSource, "observability.saga-history.v1") : new MySqlSagaTransaction(dataSource, "observability.saga-history.v1");
+    SagaDefinition definition =
+        new SagaDefinition(
+            "java-contract",
+            java.util.Map.of(
+                "OrderCreated",
+                (state, event) -> {
+                  state.setStatus(SagaState.WAITING);
+                  state.setStepId("reserve");
+                  return List.of(new SagaCommand("Reserve", "{}"));
+                }));
+    SagaContracts.Transaction transaction =
+        postgres
+            ? new PostgresSagaTransaction(dataSource, "observability.saga-history.v1")
+            : new MySqlSagaTransaction(dataSource, "observability.saga-history.v1");
     new TransactionalSagaManager(definition, transaction, new SagaHistoryOptions("test", "orders"))
         .handle(new SagaEventEnvelope("event-" + id, "OrderCreated", id, "{}"));
-    try (var connection = dataSource.getConnection(); var statement = connection.createStatement(); var rows = statement.executeQuery("SELECT count(*) FROM cursus_saga_history WHERE saga_id='" + id + "'")) {
-      rows.next(); assertThat(rows.getInt(1)).isGreaterThan(0);
+    try (var connection = dataSource.getConnection();
+        var statement = connection.createStatement();
+        var rows =
+            statement.executeQuery(
+                "SELECT count(*) FROM cursus_saga_history WHERE saga_id='" + id + "'")) {
+      rows.next();
+      assertThat(rows.getInt(1)).isGreaterThan(0);
     }
   }
 
@@ -57,8 +73,12 @@ class SagaJdbcIntegrationTest {
       query += (query.isEmpty() ? "" : "&") + "user=" + encode(credentials[0]);
       if (credentials.length == 2) query += "&password=" + encode(credentials[1]);
     }
-    return "jdbc:" + uri.getScheme() + "://" + uri.getHost()
-        + (uri.getPort() == -1 ? "" : ":" + uri.getPort()) + uri.getRawPath()
+    return "jdbc:"
+        + uri.getScheme()
+        + "://"
+        + uri.getHost()
+        + (uri.getPort() == -1 ? "" : ":" + uri.getPort())
+        + uri.getRawPath()
         + (query.isEmpty() ? "" : "?" + query);
   }
 

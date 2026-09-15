@@ -37,34 +37,118 @@ public final class SagaState {
     this.sagaType = sagaType;
     this.associationKey = associationKey;
   }
-  public String getSagaId() { return sagaId; }
-  public String getSagaType() { return sagaType; }
-  public String getAssociationKey() { return associationKey; }
-  public String getCorrelationId() { return correlationId; }
-  public void setCorrelationId(String value) { correlationId = value == null ? "" : value; }
-  public String getStatus() { return status; }
-  public void setStatus(String value) { status = value; }
-  public String getStepId() { return stepId; }
-  public void setStepId(String value) { stepId = value == null ? "" : value; }
-  public Map<String, Object> getData() { return data; }
-  public void setData(Map<String, Object> value) { data = value; }
-  public int getRetryCount() { return retryCount; }
-  public void setRetryCount(int value) { retryCount = value; }
-  public String getLastError() { return lastError; }
-  public void setLastError(String value) { lastError = value == null ? "" : value; }
-  public String getRunId() { return runId; }
-  public void setRunId(String value) { runId = value; }
-  public long getNextSequence() { return nextSequence; }
-  public void setNextSequence(long value) { nextSequence = value; }
-  public long nextSequence() { return ++nextSequence; }
-  public String getOutcome() { return outcome; }
-  public void setOutcome(String value) { outcome = value == null ? "" : value; }
-  public Instant getUpdatedAt() { return updatedAt; }
-  public void setUpdatedAt(Instant value) { updatedAt = value; }
-  public Map<String, EffectState> getEffects() { return effects; }
-  public void setEffects(Map<String, EffectState> value) { effects = value; }
-  public CompensationState getCompensation() { return compensation; }
-  public void setCompensation(CompensationState value) { compensation = value; }
+
+  public String getSagaId() {
+    return sagaId;
+  }
+
+  public String getSagaType() {
+    return sagaType;
+  }
+
+  public String getAssociationKey() {
+    return associationKey;
+  }
+
+  public String getCorrelationId() {
+    return correlationId;
+  }
+
+  public void setCorrelationId(String value) {
+    correlationId = value == null ? "" : value;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String value) {
+    status = value;
+  }
+
+  public String getStepId() {
+    return stepId;
+  }
+
+  public void setStepId(String value) {
+    stepId = value == null ? "" : value;
+  }
+
+  public Map<String, Object> getData() {
+    return data;
+  }
+
+  public void setData(Map<String, Object> value) {
+    data = value;
+  }
+
+  public int getRetryCount() {
+    return retryCount;
+  }
+
+  public void setRetryCount(int value) {
+    retryCount = value;
+  }
+
+  public String getLastError() {
+    return lastError;
+  }
+
+  public void setLastError(String value) {
+    lastError = value == null ? "" : value;
+  }
+
+  public String getRunId() {
+    return runId;
+  }
+
+  public void setRunId(String value) {
+    runId = value;
+  }
+
+  public long getNextSequence() {
+    return nextSequence;
+  }
+
+  public void setNextSequence(long value) {
+    nextSequence = value;
+  }
+
+  public long nextSequence() {
+    return ++nextSequence;
+  }
+
+  public String getOutcome() {
+    return outcome;
+  }
+
+  public void setOutcome(String value) {
+    outcome = value == null ? "" : value;
+  }
+
+  public Instant getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt(Instant value) {
+    updatedAt = value;
+  }
+
+  public Map<String, EffectState> getEffects() {
+    return effects;
+  }
+
+  public void setEffects(Map<String, EffectState> value) {
+    effects = value;
+  }
+
+  public CompensationState getCompensation() {
+    return compensation;
+  }
+
+  public void setCompensation(CompensationState value) {
+    compensation = value;
+  }
 
   public static final class EffectState {
     private String effectId;
@@ -75,22 +159,71 @@ public final class SagaState {
     private int attempts;
     private String lastError = "";
     private Instant updatedAt = Instant.now();
-    public EffectState(String effectId, String stepId) { this.effectId = effectId; this.stepId = stepId; }
-    public String getEffectId() { return effectId; }
-    public String getStepId() { return stepId; }
-    public void setStepId(String value) { stepId = value; }
-    public String getStatus() { return status; }
-    public void setStatus(String value) { status = value; }
-    public String getCommandId() { return commandId; }
-    public void setCommandId(String value) { commandId = value; }
-    public boolean isPublished() { return published; }
-    public void setPublished(boolean value) { published = value; }
-    public int getAttempts() { return attempts; }
-    public void setAttempts(int value) { attempts = value; }
-    public String getLastError() { return lastError; }
-    public void setLastError(String value) { lastError = value; }
-    public Instant getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(Instant value) { updatedAt = value; }
+
+    public EffectState(String effectId, String stepId) {
+      this.effectId = effectId;
+      this.stepId = stepId;
+    }
+
+    public String getEffectId() {
+      return effectId;
+    }
+
+    public String getStepId() {
+      return stepId;
+    }
+
+    public void setStepId(String value) {
+      stepId = value;
+    }
+
+    public String getStatus() {
+      return status;
+    }
+
+    public void setStatus(String value) {
+      status = value;
+    }
+
+    public String getCommandId() {
+      return commandId;
+    }
+
+    public void setCommandId(String value) {
+      commandId = value;
+    }
+
+    public boolean isPublished() {
+      return published;
+    }
+
+    public void setPublished(boolean value) {
+      published = value;
+    }
+
+    public int getAttempts() {
+      return attempts;
+    }
+
+    public void setAttempts(int value) {
+      attempts = value;
+    }
+
+    public String getLastError() {
+      return lastError;
+    }
+
+    public void setLastError(String value) {
+      lastError = value;
+    }
+
+    public Instant getUpdatedAt() {
+      return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant value) {
+      updatedAt = value;
+    }
   }
 
   public static final class CompensationState {
@@ -99,16 +232,49 @@ public final class SagaState {
     private int attempts;
     private String lastError = "";
     private Instant updatedAt = Instant.now();
-    public CompensationState(String stepId) { this.stepId = stepId; }
-    public String getStepId() { return stepId; }
-    public void setStepId(String value) { stepId = value; }
-    public String getStatus() { return status; }
-    public void setStatus(String value) { status = value; }
-    public int getAttempts() { return attempts; }
-    public void setAttempts(int value) { attempts = value; }
-    public String getLastError() { return lastError; }
-    public void setLastError(String value) { lastError = value; }
-    public Instant getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(Instant value) { updatedAt = value; }
+
+    public CompensationState(String stepId) {
+      this.stepId = stepId;
+    }
+
+    public String getStepId() {
+      return stepId;
+    }
+
+    public void setStepId(String value) {
+      stepId = value;
+    }
+
+    public String getStatus() {
+      return status;
+    }
+
+    public void setStatus(String value) {
+      status = value;
+    }
+
+    public int getAttempts() {
+      return attempts;
+    }
+
+    public void setAttempts(int value) {
+      attempts = value;
+    }
+
+    public String getLastError() {
+      return lastError;
+    }
+
+    public void setLastError(String value) {
+      lastError = value;
+    }
+
+    public Instant getUpdatedAt() {
+      return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant value) {
+      updatedAt = value;
+    }
   }
 }
